@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.6.8
-ECHO(PrivWindoze by Furtivex - Version 2.6.8
+title PrivWindoze Lite by Furtivex - Version 2.6.9
+ECHO(PrivWindoze Lite by Furtivex - Version 2.6.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -102,9 +102,9 @@ Echo([^|^|    ] Scanning Packages
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Recall
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
-GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
 GREP -Eis "^MicrosoftWindows\.Client\.WebExperience|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
-GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
@@ -122,222 +122,64 @@ REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 FOR %%g in (
-"HKCR\AppID\MicrosoftEdgeUpdate.exe"
-"HKCR\AppID\ie_to_edge_bho.dll"
-"HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKCR\MSEdgeHTM"
-"HKCR\MSEdgeMHT"
-"HKCR\MSEdgePDF"
-"HKCR\MicrosoftEdgeUpdate.CoreClass"
-"HKCR\MicrosoftEdgeUpdate.CoreClass.1"
-"HKCR\MicrosoftEdgeUpdate.CoreMachineClass"
-"HKCR\MicrosoftEdgeUpdate.CoreMachineClass.1"
-"HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine"
-"HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine.1.0"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine.1.0"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback.1.0"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc"
-"HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc.1.0"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine.1.0"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback.1.0"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc"
-"HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc.1.0"
-"HKCR\MicrosoftEdgeUpdate.ProcessLauncher"
-"HKCR\MicrosoftEdgeUpdate.ProcessLauncher.1.0"
-"HKCR\MicrosoftEdgeUpdate.Update3COMClassService"
-"HKCR\MicrosoftEdgeUpdate.Update3COMClassService.1.0"
-"HKCR\MicrosoftEdgeUpdate.Update3WebMachine"
-"HKCR\MicrosoftEdgeUpdate.Update3WebMachine.1.0"
-"HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback"
-"HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
-"HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
-"HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
 "HKCR\com.clipchamp.app"
 "HKCR\com.microsoft.3dviewer"
-"HKCR\ie_to_edge_bho.IEToEdgeBHO"
-"HKCR\ie_to_edge_bho.IEToEdgeBHO.1"
-"HKCR\microsoft-edge"
-"HKCR\microsoft-edge-holographic"
 "HKCR\microsoftmusic"
 "HKCR\microsoftvideo"
 "HKCR\ms-clipchamp"
 "HKCR\ms-cortana"
-"HKCR\ms-gamingoverlay"
 "HKCR\ms-insights"
 "HKCR\ms-meetnow"
 "HKCR\ms-meetnowflyout"
 "HKCR\ms-mobileplans"
-"HKCR\ms-teams"
 "HKCR\ms-xbet-survey"
 "HKCR\msnews"
 "HKCR\msnnews"
 "HKCR\msnweather"
-"HKCR\msxbox"
-"HKCR\xbox"
-"HKCR\xbox-arena"
-"HKCR\xbox-captures"
-"HKCR\xbox-friendfinder"
-"HKCR\xbox-gamehub"
-"HKCR\xbox-lfg"
-"HKCR\xbox-network"
-"HKCR\xbox-profile"
-"HKCR\xbox-settings"
-"HKCR\xbox-store"
-"HKCR\xbox-tcui"
-"HKCR\xboxgames"
-"HKCR\xboxidp"
-"HKCR\xboxmusic"
 "HKCU\Software\Classes\bingmaps"
 "HKCU\Software\Classes\bingnews"
 "HKCU\Software\Classes\bingweather"
 "HKCU\Software\Classes\feedback-hub"
-"HKCU\Software\Classes\grvopen"
 "HKCU\Software\Classes\insiderhub"
 "HKCU\Software\Classes\ms-cortana2"
-"HKCU\Software\Classes\ms-gamebar"
-"HKCU\Software\Classes\ms-gamebarservices"
-"HKCU\Software\Classes\msgamepass"
-"HKCU\Software\Classes\msgamingapp"
 "HKCU\Software\Classes\windows-feedback"
 "HKCU\Software\Classes\zune"
-"HKCU\Software\Microsoft\Edge"
-"HKCU\Software\Microsoft\EdgeUpdate"
-"HKCU\Software\Microsoft\EdgeWebView"
-"HKCU\Software\Microsoft\GameBar"
-"HKCU\Software\Microsoft\GameBarApi"
-"HKCU\Software\Microsoft\MicrosoftEdge"
-"HKCU\Software\Microsoft\OneDrive"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams"
-"HKCU\Software\Microsoft\Xbox"
-"HKCU\Software\Microsoft\XboxLive"
-"HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
-"HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\feedback-hub"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\insiderhub"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebar"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebarservices"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamingoverlay"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-insights"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-meetnowflyout"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-teams"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-xbet-survey"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamepass"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamingapp"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msnweather"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\mswindowsmusic"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-captures"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-friendfinder"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-gamehub"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-lfg"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-network"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-profile"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-settings"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-store"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-tcui"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxgames"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxidp"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune"
-"HKLM\Software\Classes\MSEdgeHTM"
-"HKLM\Software\Classes\MSEdgeMHT"
-"HKLM\Software\Classes\MSEdgePDF"
-"HKLM\Software\Classes\NetworkExplorerPlugins\Microsoft Corporation/Xbox 360"
-"HKLM\Software\Clients\StartMenuInternet\Microsoft Edge"
-"HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}"
-"HKLM\Software\Microsoft\Edge"
-"HKLM\Software\Microsoft\EdgeUpdate"
 "HKLM\Software\Microsoft\KGL"
 "HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite"
-"HKLM\Software\Microsoft\MicrosoftEdge"
-"HKLM\Software\Microsoft\OneDrive"
-"HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask"
 "HKLM\Software\Microsoft\TelemetryClient"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive1"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive2"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive3"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive4"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive5"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive6"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive7"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
-"HKLM\Software\Microsoft\Xbox"
-"HKLM\Software\Policies\Microsoft\Edge"
-"HKLM\Software\Policies\Microsoft\MicrosoftEdge"
-"HKLM\Software\Policies\Microsoft\Windows\OneDrive"
-"HKU\.DEFAULT\Software\Microsoft\Edge"
-"HKU\.DEFAULT\Software\Microsoft\OneDrive"
 "HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
 "HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
-"HKU\.DEFAULT\Software\Microsoft\Xbox"
-"HKU\S-1-5-19\Software\Microsoft\OneDrive"
-"HKU\S-1-5-20\Software\Microsoft\OneDrive"
-"HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
 )
 
-REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
-REG DELETE "HKCR\.html\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
-REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
-REG DELETE "HKCR\.pdf\OpenWithProgids" /V MSEdgePDF /F >NUL 2>&1
-REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
-REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.slatedigital.analytics" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V LenovoVantageToolbar /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
-REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
 
-
-REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
 
 FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
 REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>"%TEMP%\privwindozelogp.txt"
-GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
-GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 
 SORT_ -f -u <"%TEMP%\privwindozelogp2_found.txt" >"%TEMP%\privwindozelogp2_del.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
@@ -350,7 +192,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
-GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
+GREP -Es "Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelogMS.txt" >"%TEMP%\privwindozeMS2.txt"
 FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
@@ -358,7 +200,7 @@ FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
 )
 :FirewallOrphans
 GREP -Es "\|App=[A-Za-z]:.*\.exe" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
-IF ERRORLEVEL 1 ( GOTO :EdgeAutoLaunch )
+IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v.*\|App=([A-Za-z]:.*\.exe).*\|$/\1     \2/" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
 SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3clsids.txt"
 SED -r "s/^.*\s{5}([A-Za-z]:.*\.exe)$/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
@@ -373,14 +215,7 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     ENDLOCAL
     )
 )
-:EdgeAutoLaunch
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
-IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
-SED -r "s/^\s{4}(MicrosoftEdgeAutoLaunch_[A-F0-9]{32})\s+REG_SZ\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
-FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(HKCU\Software\Microsoft\Windows\CurrentVersion\Run\\%%g ^(Registry Value^)>>"%TEMP%\004"
-    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
-)
+
 :SubscribedContent
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
@@ -536,27 +371,8 @@ FOR %%g in (
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
 )
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:OneDriveTask
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
+
+
 :TelemetryTask
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
@@ -570,24 +386,13 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :NvidiaTask
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
+IF ERRORLEVEL 1 ( GOTO :Optimize )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:WindowsDefenderTask
-DIR /B "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Optimize )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
 :Optimize
@@ -644,17 +449,6 @@ FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
     SC DELETE "%%g">nul
 )
 
-:EdgeService
-REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
-SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
-GREP -Eis "^edgeupdate.*" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
-IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
-SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
-FOR /F %%g in (%TEMP%\privwindozesvc2_del.txt) DO (
-    SC CONFIG %%g start= disabled>nul
-    SC STOP %%g>nul
-    SC DELETE %%g>nul    
-)
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
 DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
@@ -722,9 +516,9 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
 IF ERRORLEVEL 1 ( GOTO :Rootkits )
-GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
-GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
     SET "packages=%%g"
@@ -760,15 +554,7 @@ FOR /F %%g in (%TEMP%\privwindozelogcl.txt) DO ( %SYS32%\wevtutil.exe cl %%g>NUL
 FOR %%g in (
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%USERPROFILE%\Desktop\Microsoft Edge.lnk"
-"%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
-"%PROGRAMS17%\Microsoft Edge.lnk"
-"%PROGRAMS17%\OneDrive.lnk"
-"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
-"%PROGRAMS27%\Microsoft Edge.lnk"
-"%PROGRAMS27%\OneDrive.lnk"
-"%PUBDESKTOP%\Microsoft Edge.lnk"
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 ) DO (
@@ -800,44 +586,17 @@ FOR %%g in (
 
 FOR %%g in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
-"%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\DiagnosticLogCSP"
-"%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
-"%APPDATA%\Microsoft\Teams"
-"%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\BGAHelperLib"
-"%LOCALA%\Microsoft\Edge"
-"%LOCALA%\Microsoft\OneDrive"
-"%LOCALA%\Microsoft\Teams"
-"%LOCALA%\Microsoft\TeamsMeetingAdd-in"
-"%LOCALA%\Microsoft\TeamsMeetingAddin"
-"%LOCALA%\Microsoft\TeamsPresenceAddin"
-"%LOCALA%\Microsoft\XboxLive"
-"%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
-"%PROGRAMFILES%\Microsoft OneDrive"
-"%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
 "%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
 "%PROGRAMFILES(x86)%\Lenovo\VantageService"
-"%PROGRAMFILES(x86)%\Microsoft\Edge"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
-"%SYS32%\Microsoft-Edge-WebView"
-"%USERPROFILE%\MicrosoftEdgeBackups"
-"%WINDIR%\GameBarPresenceWriter"
-"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\GameDVR"
-"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\Windows\GameExplorer"
-"%WINDIR%\ServiceProfiles\LocalService\OneDrive"
-"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\GameDVR"
-"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
-"%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO (
        IF EXIST %%g (
                       ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
