@@ -1,8 +1,8 @@
 :: PrivWindoze Lite
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze Lite by Furtivex - Version 2.7.0
-ECHO(PrivWindoze Lite by Furtivex - Version 2.7.0
+title PrivWindoze Lite by Furtivex - Version 2.7.2
+ECHO(PrivWindoze Lite by Furtivex - Version 2.7.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -122,6 +122,8 @@ REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 FOR %%g in (
+"HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
+"HKCR\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKCR\com.clipchamp.app"
 "HKCR\com.microsoft.3dviewer"
 "HKCR\microsoftmusic"
@@ -144,6 +146,8 @@ FOR %%g in (
 "HKCU\Software\Classes\ms-cortana2"
 "HKCU\Software\Classes\windows-feedback"
 "HKCU\Software\Classes\zune"
+"HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
+"HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
@@ -159,8 +163,14 @@ FOR %%g in (
 "HKLM\Software\Microsoft\KGL"
 "HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite"
 "HKLM\Software\Microsoft\TelemetryClient"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
 "HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
 "HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
+"Lenovo\LenovoNowLauncher"
+"Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
+"Microsoft\Office\Office 15 Subscription Heartbeat"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
 )
@@ -192,7 +202,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
-GREP -Es "Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
+GREP -Es "Name=@\{Microsoft\.(Bing|Todos|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelogMS.txt" >"%TEMP%\privwindozeMS2.txt"
 FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
@@ -266,6 +276,7 @@ FOR %%g in (
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\LenovoNowLauncher"
 "Lenovo\LenovoNowQuarterlyLaunch"
 "Lenovo\LenovoNowTask"
 "Lenovo\UDC\Lenovo UDC Diagnostic Scan"
@@ -279,6 +290,7 @@ FOR %%g in (
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.DelayedMonthlyReport"
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.MonthlyReport"
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.SScan"
+"Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
 "Lenovo\Vantage\Schedule\LenovoCompanionAppAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\LenovoSystemUpdateAddin_WeeklyTask"
 "Lenovo\Vantage\Schedule\SettingsWidgetAddinDailyScheduleTask"
@@ -296,9 +308,12 @@ FOR %%g in (
 "McAfee\WPS\McAfee Message Check"
 "McAfee\WPS\McAfee PC Optimizer Task"
 "McAfee\WPS\McAfee Scheduled Tracker Remover"
+"Microsoft\Office\Office 15 Subscription Heartbeat"
 "Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
+"Microsoft\Office\OfficeTelemetryAgentFallBack2016"
 "Microsoft\Office\OfficeTelemetryAgentLogOn"
+"Microsoft\Office\OfficeTelemetryAgentLogOn2016"
 "Microsoft\Windows\Application Experience\MareBackup"
 "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
 "Microsoft\Windows\Application Experience\PcaPatchDbTask"
@@ -359,15 +374,11 @@ FOR %%g in (
 "Microsoft\Windows\WwanSvc\NotificationTask"
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
 "Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
-"Microsoft\XblGameSave\XblGameSaveTask"
 "Samsung_PSSD_Registration_Plus"
 "TVT\TVSUUpdateTask"
 "TVT\TVSUUpdateTask_UserLogOn"
 "UEIPInvitation"
 "UbtFrameworkService"
-"Microsoft\Office\Office 15 Subscription Heartbeat"
-"Microsoft\Office\OfficeTelemetryAgentFallBack2016"
-"Microsoft\Office\OfficeTelemetryAgentLogOn2016"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
 )
@@ -608,7 +619,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze Lite by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.0 ^(11.17.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.2 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"

@@ -5,8 +5,6 @@ bingpopup.exe
 camusage.exe
 dcv2.exe
 diagscap.exe
-elevation_service.exe
-gamebar_widget.exe
 hpcommrecovery.exe
 hponeagent.exe
 installedpackagesagent.exe
@@ -36,5 +34,15 @@ udclientservice.exe
 uninstall.exe
 update.exe
 widgets.exe
-xboxpcapp.exe
-xboxpcappft.exe
+LsaToast.exe
+FaceBeautify.exe
+Lenovo.Modern.ImController.PluginHost.Device.exe
+FnHotkeyCapsLKNumLK.exe
+FnHotkeyUtility.exe
+QSHelper.exe
+AutoModeDetect.exe
+Lenovo.Modern.ImController.exe
+VantageService.exe
+LenovoUtilityService.exe
+SmartSense.exe
+LenovoNow.exe
