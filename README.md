@@ -22,12 +22,14 @@ PrivWindoze is compatible with Windows 10 and 11 and is updated daily as of Nove
 
 The primary purpose of the PrivWindoze is to stop and remove any nag screens[[4](https://www.elevenforum.com/t/enable-or-disable-lets-finish-setting-up-your-device-in-windows-11.5205/)], pop ups[[2](https://www.theverge.com/2023/8/30/23851902/microsoft-bing-popups-windows-11-malware)], high CPU usage issues, data collection and transmission[[5](https://www.pcmag.com/news/hp-accused-of-quietly-installing-spyware-on-windows-pcs)] -- also known as telemetry and analytics, as well as removing programs which are difficult to locate and remove or lack an 'Uninstall' button[[1](https://www.wintips.org/fix-cannot-uninstall-microsoft-edge-uninstall-is-greyed-out/)][[3](https://www.reddit.com/r/Hewlett_Packard/comments/lpxcwv/uninstall_hp_touchpoint_analytics_client/)]. Before the tool begins its scan, it will attempt to create a System Restore point. Please refer to this if there are any undesired results on your end. Or... just wait for Microsoft to send the software back to you in a couple of days via Windows Update. After the tool completes its scan, a report entitled 'PrivWindoze.txt' can be found on the User Desktop for review.
 
-[Direct Download Link](https://furtivex.net/PrivWindozeLite.exe) – v2.6.9 [[VT](https://www.virustotal.com/gui/file/032d4046ca3bd32cfb7f14e3b201fb64641bc4f55446a5d4297ca78f85365f1e/detection)]
+[Direct Download Link](https://furtivex.net/PrivWindozeLite.exe) – v2.7.2 [[VT](https://www.virustotal.com/gui/file/168ef9de18dd9f9d67f2110a271bed28d060846a8eb95377850fb6a8195c0fbd)]
 
 
 [![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)  [![donate_amz](https://github.com/user-attachments/assets/10476e9c-92f3-4271-8410-6f38624c94b8)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
 
-![privwindozerun](https://github.com/user-attachments/assets/a6424388-50d1-4305-995c-120c4c30ce21)
+![image](https://github.com/user-attachments/assets/584dc9df-2f22-4865-954f-1023efc2ab90)
+
+![image](https://github.com/user-attachments/assets/2b99a9c8-8248-480b-a131-a5101eb18683)
 
 Windows Explorer may close during the course of the scan -- This is expected behavior
 
