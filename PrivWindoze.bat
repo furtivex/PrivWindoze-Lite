@@ -1,8 +1,8 @@
 :: PrivWindoze Lite
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze Lite by Furtivex - Version 2.7.5
-ECHO(PrivWindoze Lite by Furtivex - Version 2.7.5
+title PrivWindoze Lite by Furtivex - Version 2.7.6
+ECHO(PrivWindoze Lite by Furtivex - Version 2.7.6
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -179,9 +179,6 @@ FOR %%g in (
 "%LMUninst%\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
 "HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
 "HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
-"Lenovo\LenovoNowLauncher"
-"Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
-"Microsoft\Office\Office 15 Subscription Heartbeat"
 ) DO ( 
       REG QUERY %%g >NUL 2>&1
       IF NOT ERRORLEVEL 1 (
@@ -260,29 +257,29 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
 )
 
 :SubscribedContent
-REG QUERY "%CUCDM%" 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
+REG QUERY %CUCDM% 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}(SubscribedContent-[0-9]{5,}Enabled)\s+REG_DWORD\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     ECHO(%CUCDM%\\%%g ^(Registry Value^)>>"%TEMP%\004"
-    REG DELETE "%CUCDM%" /V "%%g" /F >NUL 2>&1
+    REG DELETE %CUCDM% /V "%%g" /F >NUL 2>&1
 )
 
 
 :: POLICIES ::
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
-REG ADD "%CUCDM%" /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
@@ -728,12 +725,13 @@ FOR %%g in (
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
+"%PROGRAMFILES%\HP\OmenInstallMonitor"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
+"%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
 "%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
 "%PROGRAMFILES(x86)%\Lenovo\VantageService"
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
-"%PROGRAMFILES%\HP\OmenInstallMonitor"
 ) DO (
        IF EXIST %%g (
                       ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
@@ -745,7 +743,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze Lite by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.4 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.6 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
