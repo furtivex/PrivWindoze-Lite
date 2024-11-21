@@ -1,13 +1,15 @@
-:: PrivWindoze Lite
+:: PrivWindoze
 :: Created by Furtivex
-@echo OFF && color 17
-title PrivWindoze Lite by Furtivex - Version 2.7.8
-ECHO(PrivWindoze by Furtivex - Version 2.7.8
-ECHO.
-ECHO.
+@SETLOCAL
+@CD /D "%~dp0"
+@ECHO OFF
+SET DEBUG=OFF
+COLOR 17
+TITLE .
+DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
+IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-CD /d "%~dp0"
-FOR %%g in (
+FOR %%G in (
 grep.exe
 libiconv2.dll
 libintl3.dll
@@ -15,16 +17,17 @@ pcre3.dll
 regex2.dll
 sed.exe
 sort_.exe
-) DO ( COPY /Y "%CD%\dependencies\%%g" "%WINDIR%" >NUL 2>&1 )
+) DO ( COPY /Y "%CD%\dependencies\%%G" "%WINDIR%" >NUL 2>&1 )
 
-FOR %%g in (
+FOR %%G in (
 proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
 NULL
-) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
+regbad.dat
+) DO ( COPY /Y "%CD%\%%G" %systemdrive%\PrivWindoze >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
@@ -47,11 +50,7 @@ SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "StartupApprovedRun=HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
-SET "MRun=HKLM\Software\Microsoft\Windows\CurrentVersion\Run"
-SET "w.proto=HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol"
 SET "CUCDM=HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
-SET "LMUninst=HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall"
-SET "CUUninst=HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall"
 SET "WTASKS=%WINDIR%\Tasks"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
@@ -63,9 +62,11 @@ whoami /user>"%TEMP%\privwindozelogwho.txt"
 GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozelogwho.txt" >"%TEMP%\privwindozelogwho2.txt"
 IF ERRORLEVEL 1 ( GOTO :AdminChk )
 SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
-FOR /F %%g in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%g )
+FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-
+ECHO.PrivWindoze Lite Scan Started
+ECHO.
+ECHO.
 :AdminChk
 net session >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
@@ -79,7 +80,7 @@ IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
  pause
 )
 
-FOR %%g in (
+FOR %%G in (
 grep.exe
 libiconv2.dll
 libintl3.dll
@@ -87,16 +88,17 @@ pcre3.dll
 regex2.dll
 sed.exe
 sort_.exe
-) DO ( IF NOT EXIST %WINDIR%\%%g GOTO :eof )
+) DO ( IF NOT EXIST %WINDIR%\%%G GOTO :eof )
 
-FOR %%g in (
+FOR %%G in (
 proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
 NULL
-) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
+regbad.dat
+) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
 
 :: Create System Restore Point
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Processes
@@ -105,9 +107,7 @@ POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePoin
 :: PROCESSES ::
 :Processes
 Echo([^|     ] Scanning Processes
-FOR /F %%g in (%TEMP%\proc_kill.dat) DO (
-    TASKKILL /F /IM "%%g" >NUL 2>&1
-)
+@FOR /F "TOKENS=*" %%G IN ( proc_kill.dat ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
 
 :: PACKAGES ::
 :Packages
@@ -134,64 +134,14 @@ REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 :: REGISTRY ::
 :Registry
 Echo([^|^|^|   ] Scanning Registry
-FOR %%g in (
-"HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
-"HKCR\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
-"HKCR\com.clipchamp.app"
-"HKCR\com.microsoft.3dviewer"
-"HKCR\microsoftmusic"
-"HKCR\microsoftvideo"
-"HKCR\ms-clipchamp"
-"HKCR\ms-cortana"
-"HKCR\ms-insights"
-"HKCR\ms-meetnow"
-"HKCR\ms-meetnowflyout"
-"HKCR\ms-mobileplans"
-"HKCR\ms-xbet-survey"
-"HKCR\msnews"
-"HKCR\msnnews"
-"HKCR\msnweather"
-"HKCU\Software\Classes\bingmaps"
-"HKCU\Software\Classes\bingnews"
-"HKCU\Software\Classes\bingweather"
-"HKCU\Software\Classes\feedback-hub"
-"HKCU\Software\Classes\insiderhub"
-"HKCU\Software\Classes\ms-cortana2"
-"HKCU\Software\Classes\msgamepass"
-"HKCU\Software\Classes\msgamingapp"
-"HKCU\Software\Classes\windows-feedback"
-"HKCU\Software\Classes\zune"
-"HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
-"HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
-"HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
-"%w.proto%\bingmaps"
-"%w.proto%\bingnews"
-"%w.proto%\bingweather"
-"%w.proto%\feedback-hub"
-"%w.proto%\insiderhub"
-"%w.proto%\ms-insights"
-"%w.proto%\ms-meetnowflyout"
-"%w.proto%\ms-xbet-survey"
-"%w.proto%\msnweather"
-"%w.proto%\mswindowsmusic"
-"%w.proto%\windows-feedback"
-"%w.proto%\zune"
-"HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite"
-"HKLM\Software\Microsoft\TelemetryClient"
-"%LMUninst%\Lenovo Now"
-"%LMUninst%\VantageSRV_is1"
-"%LMUninst%\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
-"HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
-"HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
-) DO ( 
-      REG QUERY %%g >NUL 2>&1
-      IF NOT ERRORLEVEL 1 (
-                             ECHO(%%g ^(Registry Key^)>>"%TEMP%\004"
-                             REG DELETE %%g /F >NUL 2>&1
-                           )
-)
+@FOR /F "TOKENS=*" %%G IN ( regbad.dat ) DO @REG QUERY "%%G" 2>NUL|GREP -Es "^HKEY_" >>temp00
+FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
+  ECHO.%%G ^(Registry Key^) >>"%TEMP%\004"
+  REG DELETE "%%G" /F >NUL 2>&1
+  )
+DEL /A/F/Q temp0? >NUL 2>&1
 
+:: icacls %%G /grant "%username%":(d,wdac)
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE %URun% /V com.slatedigital.analytics /F >NUL 2>&1
@@ -206,84 +156,94 @@ IF ERRORLEVEL 1 ( GOTO :XboxHuer )
 SED -r "s/^\s{4}(.*)\s{4}REG_SZ\s{4}(.*)$/\1 ===> \2/" <"%TEMP%\_crun" >"%TEMP%\_crunboth"
 SED -r "s/^(.*)\s===>.*/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlykey"
 SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
-FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
-    REG QUERY %URUN% /V "%%g" >NUL 2>&1
+FOR /F "usebackq delims=" %%G in ( Urunkey.cfg ) DO (
+    REG QUERY %URUN% /V "%%G" >NUL 2>&1
     IF NOT ERRORLEVEL 1 (
-                           ECHO(%URUN%\\"%%g" ^(Registry Value^)>>"%TEMP%\004"
-                           REG DELETE %URUN% /V "%%g" /F >NUL 2>&1
+                           ECHO(%URUN%\\"%%G" ^(Registry Value^)>>"%TEMP%\004"
+                           REG DELETE %URUN% /V "%%G" /F >NUL 2>&1
                           )
 )
+
 REM :StartupApprovedRun
 REM REG QUERY %StartupApprovedRun% 2>NUL|GREP -s "    REG_BINARY    ">"%TEMP%\_crun"
 REM IF ERRORLEVEL 1 ( GOTO :XboxHuer )
 REM SED -r "s/^\s{4}(.*)\s{4}REG_BINARY\s{4}(0[2|3]).*$/\1 ===> \2/" <"%TEMP%\_crun" >"%TEMP%\_crunboth"
 REM SED -r "s/^(.*)\s===>.*/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlykey"
 REM SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
-REM FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
-REM    REG QUERY %StartupApprovedRun% /V "%%g" >NUL 2>&1
+REM FOR /F "usebackq delims=" %%G in ("%TEMP%\Urunkey.cfg") DO (
+REM    REG QUERY %StartupApprovedRun% /V "%%G" >NUL 2>&1
 REM    IF NOT ERRORLEVEL 1 (
-REM                           ECHO(%StartupApprovedRun%\\"%%g" ^(Registry Value^)>>"%TEMP%\004"
-REM                           REG DELETE %StartupApprovedRun% /V "%%g" /F >NUL 2>&1
+REM                           ECHO(%StartupApprovedRun%\\"%%G" ^(Registry Value^)>>"%TEMP%\004"
+REM                           REG DELETE %StartupApprovedRun% /V "%%G" /F >NUL 2>&1
 REM                          )
 REM )
 
 :XboxHuer
-REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL|GREP -Es "RAS[A-Z0-9]{5}$">>"%TEMP%\privwindozelogh.txt"
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
-   ECHO("%%g" ^(Registry Key^)>>"%TEMP%\004"
-   REG DELETE "%%g" /F >NUL 2>&1
+REG QUERY HKCR 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
+REG QUERY HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
+REG QUERY HKLM\Software\Microsoft\Tracing 2>NUL|GREP -Es "RAS[A-Z0-9]{5}$">>"%TEMP%\privwindozelogh.txt"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogh.txt") DO (
+   ECHO("%%G" ^(Registry Key^)>>"%TEMP%\004"
+   REG DELETE "%%G" /F >NUL 2>&1
 )
 
-FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
-REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>"%TEMP%\privwindozelogp.txt"
-REG QUERY "HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\%SID%" 2>NUL>>"%TEMP%\privwindozelogp.txt"
-GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
-GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
-GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+@FOR /F "TOKENS=*" %%G IN ( reglocs_pkgs.dat ) DO @REG QUERY "%%G" 2>NUL>>temp00
+REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>temp00
+REG QUERY "HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\%SID%" 2>NUL>>temp00
+GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <temp00 >temp01
+GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <temp00 >>temp01
+GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <temp00 >>temp01
+SORT_ -f -u <temp01 >temp02
+IF EXIST temp02 (
+  FOR /F "TOKENS=*" %%G IN ( temp02 ) DO @(
+    ECHO.%%G ^(Registry Key^) >>"%TEMP%\004"
+    REG DELETE "%%G" /F >NUL 2>&1
+    ) )
+DEL /A/F/Q temp0? >NUL 2>&1
 
-SORT_ -f -u <"%TEMP%\privwindozelogp2_found.txt" >"%TEMP%\privwindozelogp2_del.txt"
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
-   SET "regpath=%%g"
-   SETLOCAL EnableDelayedExpansion
-   ECHO("!regpath!" ^(Registry Key^)>>"%TEMP%\004"
-   REG DELETE "!regpath!" /F >NUL 2>&1
-   ENDLOCAL
-)
-
-REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}" >temp00
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
-GREP -Es "Name=@\{Microsoft\.(Bing|Todos|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
+GREP -Es "Name=@\{Microsoft\.(Bing|Todos|Zune)|Name=@\{Clipchamp\." <temp00 >temp01
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
-SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelogMS.txt" >"%TEMP%\privwindozeMS2.txt"
-FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
-    REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V "%%g" /F >NUL 2>&1
-)
+SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <temp01 >temp02
+IF EXIST temp02 (
+  FOR /F "TOKENS=*" %%G IN ( temp02 ) DO @REG DELETE HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules /V "%%G" /F >NUL 2>&1
+  )
+DEL /A/F/Q temp0? >NUL 2>&1
+
 :FirewallOrphans
-GREP -Es "\|App=[A-Za-z]:.*\.exe" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
+GREP -Es "\|App=[A-Za-z]:.*\.exe" <temp00 >temp01
 IF ERRORLEVEL 1 ( GOTO :EdgeAutoLaunch )
-SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v.*\|App=([A-Za-z]:.*\.exe).*\|$/\1     \2/" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
-SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3clsids.txt"
-SED -r "s/^.*\s{5}([A-Za-z]:.*\.exe)$/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
-FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
-    FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
+SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v.*\|App=([A-Za-z]:.*\.exe).*\|$/\1     \2/" <temp01 >"%TEMP%\fwall.txt"
+SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\fwall.txt" >"%TEMP%\fwallclsids.txt"
+SED -r "s/^.*\s{5}([A-Za-z]:.*\.exe)$/\1/" <"%TEMP%\fwall.txt" >"%TEMP%\fwallpaths.txt"
+FOR /F %%G in (%TEMP%\fwallclsids.txt) DO (
+    FOR /F "usebackq delims=" %%i in ("%TEMP%\fwallpaths.txt") DO (
     SET "firewallpath=%%i"
     SETLOCAL EnableDelayedExpansion
     IF NOT EXIST "!firewallpath!" (
-                                     ECHO(HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules\\%%g -^> "!firewallpath!" ^(No File^)>>"%TEMP%\004"
-                                     REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g /F >NUL 2>&1
+                                     ECHO(HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules\\%%G -^> "!firewallpath!" ^(No File^)>>"%TEMP%\004"
+                                     REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%G /F >NUL 2>&1
                                     )
     ENDLOCAL
     )
 )
+DEL /A/F/Q temp0? >NUL 2>&1
 :EdgeAutoLaunch
-
+REG QUERY "%URun%" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
+IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
+SED -r "s/^\s{4}(MicrosoftEdgeAutoLaunch_[A-F0-9]{32})\s+REG_SZ\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
+FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
+    ECHO(%URun%\\%%G ^(Registry Value^)>>"%TEMP%\004"
+    REG DELETE "%URun%" /V "%%G" /F >NUL 2>&1
+)
 :SubscribedContent
 REG QUERY %CUCDM% 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}(SubscribedContent-[0-9]{5,}Enabled)\s+REG_DWORD\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
-FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(%CUCDM%\\%%g ^(Registry Value^)>>"%TEMP%\004"
-    REG DELETE "%CUCDM%" /V "%%g" /F >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
+    ECHO(%CUCDM%\\%%G ^(Registry Value^)>>"%TEMP%\004"
+    REG DELETE %CUCDM% /V "%%G" /F >NUL 2>&1
 )
 
 :: POLICIES ::
@@ -319,7 +279,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
-FOR %%g in (
+FOR %%G in (
 "$nya-Loli"
 "$nya-svc64"
 "AsusFCNotification"
@@ -448,14 +408,14 @@ FOR %%g in (
 "dialersvc64"
 "sonic"
 ) DO (
-       SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
+       SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
 )
 
 :TelemetryTask
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -464,20 +424,31 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :NvidiaTask
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Optimize )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
+:WindowsDefenderTask
+DIR /B "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Optimize )
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
 :Optimize
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OmenHp )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -487,8 +458,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :OmenHp
 DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^Omen(Install|Overlay)">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :TimeBasedEvents )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -498,8 +469,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :TimeBasedEvents
 DIR /B "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :UDCLen )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\Lenovo\ImController\TimeBasedEvents\!taskname!" >NUL 2>&1
@@ -509,8 +480,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :UDCLen
 DIR /B "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :UDCLen2 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
@@ -520,8 +491,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :UDCLen2
 DIR /B "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :WDNA )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
@@ -531,8 +502,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :WDNA
 DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^WDNA_Updater[0-9]{3,}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :YTHex )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -542,8 +513,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :YTHex
 DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Es "^YT[a-f0-9]{8,}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :ICTorrent )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -553,8 +524,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :ICTorrent
 DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^ICTorrent">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%G"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -563,12 +534,12 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
-FOR /F %%g in (%TEMP%\svc_stop_disable.dat) DO (
-    SC CONFIG "%%g" start= disabled>nul
-    SC STOP "%%g">nul
+FOR /F %%G in ( svc_stop_disable.dat ) DO (
+    SC CONFIG "%%G" start= disabled>nul
+    SC STOP "%%G">nul
 )
-FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
-    SC DELETE "%%g">nul
+FOR /F %%G in ( svc_delete.dat ) DO (
+    SC DELETE "%%G">nul
 )
 :EdgeService
 
@@ -576,8 +547,8 @@ FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
 Echo([^|^|^|^|^|^|] Scanning File System
 DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "discord=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "discord=%%G"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
     ENDLOCAL
@@ -585,8 +556,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :Discord2
 DIR /B "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :locallow64hex )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "discord=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "discord=%%G"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
     ENDLOCAL
@@ -594,8 +565,8 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :locallow64hex
 DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :InboxApps )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "locallow64hex=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "locallow64hex=%%G"
     SETLOCAL EnableDelayedExpansion
     IF EXIST "!LOCALLOW!\!locallow64hex!" (
             ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%TEMP%\001"
@@ -606,14 +577,14 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :InboxApps
 DIR /B/A:-D "%WINDIR%\InboxApps" 2>NUL|GREP -Eis "^Microsoft\.(Bing|Copilot|StartExperiencesApp)">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :D3DSCache )
-FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
-    DEL /F/Q "%WINDIR%\InboxApps\%%g" >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
+    DEL /F/Q "%WINDIR%\InboxApps\%%G" >NUL 2>&1
 )
 :D3DSCache
 DIR /B/A:D "%LOCALA%\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :D3DSCache2 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "cache=%%g"
+FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
+    SET "cache=%%G"
     SETLOCAL EnableDelayedExpansion
     RD /S/Q "!LOCALA!\D3DSCache\!cache!" >NUL 2>&1
     ENDLOCAL
@@ -621,20 +592,20 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :D3DSCache2
 DIR /B/A:D "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :D3DSCache3 )
-FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%g" >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
+    RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%G" >NUL 2>&1
 )
 :D3DSCache3
 DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Twtmp )
-FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\D3DSCache\%%g" >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
+    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\D3DSCache\%%G" >NUL 2>&1
 )
 :Twtmp
 DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local" 2>NUL|GREP -Es "^tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Localpackages )
-FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\%%g" >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
+    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\%%G" >NUL 2>&1
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
@@ -661,9 +632,9 @@ SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
 GREP -Eis "^(hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 :: NIRCMD BEEP 1400 50
-FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
-    Echo(%%g ^(Driver^)>>"%TEMP%\000"
-    %SYS32%\pnputil.exe /delete-driver %%g /uninstall /force >NUL 2>&1
+FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
+    Echo(%%G ^(Driver^)>>"%TEMP%\000"
+    %SYS32%\pnputil.exe /delete-driver %%G /uninstall /force >NUL 2>&1
 )
 
 :Files
@@ -671,123 +642,84 @@ FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
 IF EXIST %SYS32%\CertUtil.exe %SYS32%\CertUtil.exe -urlcache * delete>NUL
 IF NOT EXIST %SYS32%\wevtutil.exe GOTO :Files2
 %SYS32%\wevtutil.exe el|GREP -Es "^(Application|Security|Setup|System|ForwardedEvents)$">"%TEMP%\privwindozelogcl.txt"
-FOR /F %%g in (%TEMP%\privwindozelogcl.txt) DO ( %SYS32%\wevtutil.exe cl %%g>NUL )
+FOR /F %%G in (%TEMP%\privwindozelogcl.txt) DO ( %SYS32%\wevtutil.exe cl %%G>NUL )
      
 :Files2
-FOR %%g in (
-"%ALLUSERSPROFILE%\*.bat"
-"%ALLUSERSPROFILE%\*.cmd"
-"%ALLUSERSPROFILE%\*.dll"
-"%ALLUSERSPROFILE%\*.exe"
-"%ALLUSERSPROFILE%\*.js"
-"%ALLUSERSPROFILE%\*.pif"
-"%ALLUSERSPROFILE%\*.ps1"
-"%ALLUSERSPROFILE%\*.scr"
-"%ALLUSERSPROFILE%\*.tmp"
-"%ALLUSERSPROFILE%\*.vbe"
-"%ALLUSERSPROFILE%\*.vbs"
+
+DIR /B/A:-D "%ALLUSERSPROFILE%" 2>NUL>allusersprofile
+DIR /B/A:-D "%APPDATA%" 2>NUL>appdata
+DIR /B/A:-D "%LOCALA%" 2>NUL>locala
+DIR /B/A:-D "%LOCALLOW%" 2>NUL>locallow
+DIR /B/A:-D "%STARTUP%" 2>NUL>startup
+DIR /B/A:-D "%SYS32%\config\systemprofile\AppData" 2>NUL>sys32appdata
+
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <allusersprofile >allusersprofile2
+FOR /F "TOKENS=*" %%G IN ( allusersprofile2 ) DO @(
+  ECHO.%ALLUSERSPROFILE%\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%ALLUSERSPROFILE%\%%G" >NUL 2>&1
+  )
+
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <appdata >appdata2
+FOR /F "TOKENS=*" %%G IN ( appdata2 ) DO @(
+  ECHO.%APPDATA%\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%APPDATA%\%%G" >NUL 2>&1
+  )
+  
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locala >locala2
+FOR /F "TOKENS=*" %%G IN ( locala2 ) DO @(
+  ECHO.%LOCALA%\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%LOCALA%\%%G" >NUL 2>&1
+  )
+  
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locallow >locallow2
+FOR /F "TOKENS=*" %%G IN ( locallow2 ) DO @(
+  ECHO.%LOCALLOW%\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%LOCALLOW%\%%G" >NUL 2>&1
+  )
+  
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <startup >startup2
+FOR /F "TOKENS=*" %%G IN ( startup2 ) DO @(
+  ECHO.%STARTUP%\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%STARTUP%\%%G" >NUL 2>&1
+  )
+  
+GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <sys32appdata >sys32appdata2
+FOR /F "TOKENS=*" %%G IN ( sys32appdata2 ) DO @(
+  ECHO.%SYS32%\config\systemprofile\AppData\%%G ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%SYS32%\config\systemprofile\AppData\%%G" >NUL 2>&1
+  )
+
+FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
-"%APPDATA%\*.bat"
-"%APPDATA%\*.cmd"
-"%APPDATA%\*.dll"
-"%APPDATA%\*.exe"
-"%APPDATA%\*.js"
-"%APPDATA%\*.pif"
-"%APPDATA%\*.ps1"
-"%APPDATA%\*.scr"
-"%APPDATA%\*.tmp"
-"%APPDATA%\*.vbe"
-"%APPDATA%\*.vbs"
-"%APPDATA%\Custom_update\Update_????????.dll"
 "%APPDATA%\Gitl\mrucl.exe"
 "%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
-"%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe
+"%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%APPDATA%\sonicstudio\sonic.exe"
-"%LOCALA%\*.bat"
-"%LOCALA%\*.cmd"
-"%LOCALA%\*.dll"
-"%LOCALA%\*.exe"
-"%LOCALA%\*.js"
-"%LOCALA%\*.pif"
-"%LOCALA%\*.ps1"
-"%LOCALA%\*.scr"
-"%LOCALA%\*.tmp"
-"%LOCALA%\*.vbe"
-"%LOCALA%\*.vbs"
 "%LOCALA%\LavoshGri\php.exe"
 "%LOCALA%\Updates\Run.vbs"
 "%LOCALA%\Updates\WindowsService.exe"
 "%LOCALA%\programs\common\taskshosts.exe"
 "%LOCALA%\yzsx_cloud\wdcloud_v2.exe"
-"%LOCALLOW%\*.bat"
-"%LOCALLOW%\*.cmd"
-"%LOCALLOW%\*.dll"
-"%LOCALLOW%\*.exe"
-"%LOCALLOW%\*.js"
-"%LOCALLOW%\*.pif"
-"%LOCALLOW%\*.ps1"
-"%LOCALLOW%\*.scr"
-"%LOCALLOW%\*.tmp"
-"%LOCALLOW%\*.vbe"
-"%LOCALLOW%\*.vbs"
 "%PUBLIC%\Documents\Systeem.vbs"
-"%STARTUP%\?.exe.lnk"
-"%STARTUP%\?.js.lnk"
-"%STARTUP%\?.ps1.lnk"
-"%STARTUP%\?.vbe.lnk"
-"%STARTUP%\?.vbs.lnk"
 "%STARTUP%\ITERHPGen.lnk"
 "%STARTUP%\Microsoft.NET Framework.exe"
 "%STARTUP%\SC.cmd"
 "%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\mrucl.lnk"
-"%SYS32%\config\systemprofile\AppData\*.bat"
-"%SYS32%\config\systemprofile\AppData\*.cmd"
-"%SYS32%\config\systemprofile\AppData\*.dll"
-"%SYS32%\config\systemprofile\AppData\*.exe"
-"%SYS32%\config\systemprofile\AppData\*.js"
-"%SYS32%\config\systemprofile\AppData\*.pif"
-"%SYS32%\config\systemprofile\AppData\*.ps1"
-"%SYS32%\config\systemprofile\AppData\*.scr"
-"%SYS32%\config\systemprofile\AppData\*.tmp"
-"%SYS32%\config\systemprofile\AppData\*.vbe"
-"%SYS32%\config\systemprofile\AppData\*.vbs"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.bat"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.cmd"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.dll"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.exe"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.js"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.pif"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.ps1"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.scr"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.tmp"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.vbe"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.vbs"
-"%SYS32%\config\systemprofile\AppData\Local\*.bat"
-"%SYS32%\config\systemprofile\AppData\Local\*.cmd"
-"%SYS32%\config\systemprofile\AppData\Local\*.dll"
-"%SYS32%\config\systemprofile\AppData\Local\*.exe"
-"%SYS32%\config\systemprofile\AppData\Local\*.js"
-"%SYS32%\config\systemprofile\AppData\Local\*.pif"
-"%SYS32%\config\systemprofile\AppData\Local\*.ps1"
-"%SYS32%\config\systemprofile\AppData\Local\*.scr"
-"%SYS32%\config\systemprofile\AppData\Local\*.tmp"
-"%SYS32%\config\systemprofile\AppData\Local\*.vbe"
-"%SYS32%\config\systemprofile\AppData\Local\*.vbs"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%USERPROFILE%\Favorites\Bing.url"
 "%WINDIR%\$nya-onimai3\$nya-Loli.bat"
 "%WTASKS%\Gtask.job"
-) DO (
-       IF EXIST "%%g" (
-                        ECHO("%%g" ^(File^)>>"%TEMP%\001"
-                        DEL /F/Q "%%g" >NUL 2>&1
-                       )
+) DO @(
+  IF EXIST "%%G" (
+    ECHO."%%G" ^(File^)>>"%TEMP%\001"
+    DEL /A/F/Q %%G >NUL 2>&1
+    )
 )
 
-FOR %%g in (
+
+FOR %%G in (
 "%APPDATA%\obs-studio\logs\*"
 "%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
 "%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
@@ -804,11 +736,9 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*"
 "%WINDIR%\SystemTemp\*"
 "%WINDIR%\Temp\*"
-) DO (
-      DEL /F/Q %%g >NUL 2>&1
-)
+) DO @DEL /A/F/Q "%%G" >NUL 2>&1
 
-FOR %%g in (
+FOR %%G in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
@@ -820,18 +750,18 @@ FOR %%g in (
 "%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
 "%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
 "%PROGRAMFILES(x86)%\Lenovo\VantageService"
-) DO (
-       IF EXIST %%g (
-                      ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
-                      RD /S/Q %%g >NUL 2>&1
-                      )
+) DO @(
+  IF EXIST %%G (
+    ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+    RD /S/Q %%G >NUL 2>&1
+    )
 )
 
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze Lite by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.8 ^(11.20.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.9 ^(11.21.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -898,18 +828,13 @@ Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 
-:ClearTemp
-DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Esv "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "deltemp=%%g"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
-    ENDLOCAL
-)
-RD /S/Q "%TEMP%\dependencies" >NUL 2>&1
+RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
+IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
+DEL /A/F/Q temp0? >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan completed. A log can be found on your Desktop.
-TIMEOUT /t 05>NUL && DEL /F/Q "%TEMP%\PrivWindoze.bat">NUL 2>&1
+DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
+TIMEOUT /t 05>NUL && RD /S/Q %systemdrive%\PrivWindoze
 :eof
