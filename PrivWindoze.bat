@@ -400,8 +400,12 @@ FOR %%G in (
 "YT Storage Logon"
 "dialersvc64"
 "sonic"
-) DO @SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
-
+) DO @(
+  IF EXIST "%SYS32%\Tasks\%%G" (
+    ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+    SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
+    )
+)
 :TelemetryTask
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
@@ -764,7 +768,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.3 ^(11.21.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.3 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
