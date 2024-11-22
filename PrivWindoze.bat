@@ -534,7 +534,16 @@ FOR /F %%G in ( svc_delete.dat ) DO (
     SC DELETE "%%G">nul
 )
 :EdgeService
-
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
+SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
+GREP -Eis "^WinSW[0-9]service" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
+IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
+SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
+FOR /F %%G in (%TEMP%\privwindozesvc2_del.txt) DO (
+    SC CONFIG %%G start= disabled>nul
+    SC STOP %%G>nul
+    SC DELETE %%G>nul    
+)
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
 DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
