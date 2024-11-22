@@ -701,7 +701,7 @@ FOR %%G in (
 "%LOCALA%\Updates\Run.vbs"
 "%LOCALA%\Updates\WindowsService.exe"
 "%LOCALA%\yzsx_cloud\wdcloud_v2.exe"
-"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe
+"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe"
 "%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
 "%PUBLIC%\Documents\Systeem.vbs"
 "%STARTUP%\bckp_amgr.lnk"
