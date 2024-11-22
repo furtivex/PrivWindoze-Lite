@@ -20,13 +20,13 @@ sort_.exe
 ) DO ( COPY /Y "%CD%\dependencies\%%G" "%WINDIR%" >NUL 2>&1 )
 
 FOR %%G in (
+NULL
 proc_kill.dat
+regbad.dat
+reglocs_pkgs.dat
 svc_delete.dat
 svc_stop_disable.dat
-reglocs_pkgs.dat
 Urunkey.cfg
-NULL
-regbad.dat
 ) DO ( COPY /Y "%CD%\%%G" %systemdrive%\PrivWindoze >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
@@ -91,13 +91,13 @@ sort_.exe
 ) DO ( IF NOT EXIST %WINDIR%\%%G GOTO :eof )
 
 FOR %%G in (
+NULL
 proc_kill.dat
+regbad.dat
+reglocs_pkgs.dat
 svc_delete.dat
 svc_stop_disable.dat
-reglocs_pkgs.dat
 Urunkey.cfg
-NULL
-regbad.dat
 ) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
 
 :: Create System Restore Point
@@ -684,21 +684,23 @@ FOR /F "TOKENS=*" %%G IN ( sys32appdata2 ) DO @(
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Gitl\mrucl.exe"
-"%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
 "%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
+"%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%APPDATA%\sonicstudio\sonic.exe"
 "%LOCALA%\LavoshGri\php.exe"
+"%LOCALA%\programs\common\taskshosts.exe"
 "%LOCALA%\Updates\Run.vbs"
 "%LOCALA%\Updates\WindowsService.exe"
-"%LOCALA%\programs\common\taskshosts.exe"
 "%LOCALA%\yzsx_cloud\wdcloud_v2.exe"
+"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe
+"%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
 "%PUBLIC%\Documents\Systeem.vbs"
+"%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\ITERHPGen.lnk"
 "%STARTUP%\Microsoft.NET Framework.exe"
-"%STARTUP%\SC.cmd"
-"%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\mrucl.lnk"
+"%STARTUP%\SC.cmd"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%WINDIR%\$nya-onimai3\$nya-Loli.bat"
@@ -734,9 +736,9 @@ FOR %%G in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
-"%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
 "%PROGRAMFILES%\HP\OmenInstallMonitor"
+"%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
 "%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
@@ -753,7 +755,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.0 ^(11.21.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.1 ^(11.21.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"

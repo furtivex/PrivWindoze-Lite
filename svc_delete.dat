@@ -1,5 +1,6 @@
-hp comm recover
+AltrsikService
 hp-one-agent-service
+hp comm recover
 hpapphelpercap
 hpcustomcapdriver
 hpdiagscap
@@ -8,10 +9,11 @@ hpsysinfocap
 hptouchpointanalyticsservice
 intel analytics service
 lenovovantageservice
+SmartAppearanceAISVC
+SmartSense
 tobiialenovoyx80
 tobiirgb
 udcservice
 ueipsvc
-SmartAppearanceAISVC
-SmartSense
 WindowsAutHost
+winsvcmon

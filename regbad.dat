@@ -24,6 +24,7 @@ HKCU\Software\Classes\insiderhub
 HKCU\Software\Classes\ms-cortana2
 HKCU\Software\Classes\windows-feedback
 HKCU\Software\Classes\zune
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\gotosrch
 HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
 HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}
 HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
@@ -41,8 +42,10 @@ HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\A
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune
 HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
 HKLM\Software\Microsoft\TelemetryClient
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6B2B4E31-FF1C-4719-9982-47964782F963}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AltrsikApplication
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
 HKU\.DEFAULT\Software\Microsoft\TelemetryClient
 HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry

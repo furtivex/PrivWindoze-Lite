@@ -1,9 +1,10 @@
+AltrsikService
 diagtrack
 dmwappushservice
 dosvc
 dusmsvc
-hp comm recover
 hp-one-agent-service
+hp comm recover
 hpapphelpercap
 hpcustomcapdriver
 hpdiagscap
@@ -11,11 +12,12 @@ hpnetworkcap
 hpsysinfocap
 hptouchpointanalyticsservice
 lenovovantageservice
+SmartAppearanceAISVC
+SmartSense
 tobiialenovoyx80
 tobiirgb
 udcservice
 ueipsvc
-wpnservice
-SmartAppearanceAISVC
-SmartSense
 WindowsAutHost
+winsvcmon
+wpnservice
