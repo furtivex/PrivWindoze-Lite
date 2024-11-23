@@ -1,19 +1,18 @@
 AltrsikService
 hp-one-agent-service
-hp comm recover
-hpapphelpercap
-hpcustomcapdriver
-hpdiagscap
-hpnetworkcap
-hpsysinfocap
-hptouchpointanalyticsservice
-intel analytics service
-lenovovantageservice
+HP Comm Recover
+HPAppHelperCap
+HPCustomCapDriver
+HPDiagsCap
+HPNetworkCap
+HPSysInfoCap
+HpTouchpointAnalyticsService
+Intel Analytics Service
+LenovoVantageService
 SmartAppearanceAISVC
 SmartSense
-tobiialenovoyx80
-tobiirgb
-udcservice
-ueipsvc
+TobiiALENOVOYX80
+TobiiRGB
+UDCService
+UEIPSvc
 WindowsAutHost
-winsvcmon

@@ -400,6 +400,8 @@ FOR %%G in (
 "YT Storage Logon"
 "dialersvc64"
 "sonic"
+"MB Led SDK"
+"moagent"
 ) DO @(
   IF EXIST "%SYS32%\Tasks\%%G" (
     ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
@@ -448,9 +450,15 @@ FOR /F %%G in ( svc_stop_disable.dat ) DO (
     SC CONFIG "%%G" start= disabled>nul
     SC STOP "%%G">nul
 )
-FOR /F %%G in ( svc_delete.dat ) DO (
-    SC DELETE "%%G">nul
+@FOR /F "TOKENS=*" %%G IN ( svc_delete.dat ) DO @(
+  SC QUERY "%%G" 2>NUL|GREP -Es "WAIT_HINT" >temp00
+  IF NOT ERRORLEVEL 1 (
+    ECHO.%%G ^(Service^) >>"%TEMP%\000b"
+    SC DELETE "%%G" >nul
+    )
 )
+
+DEL /A/Q temp0? >NUL 2>&1
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
@@ -474,23 +482,11 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Discord2
 DIR /B "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :locallow64hex )
+IF ERRORLEVEL 1 ( GOTO :InboxApps )
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
     SET "discord=%%G"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
-    ENDLOCAL
-)
-:locallow64hex
-DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :InboxApps )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "locallow64hex=%%G"
-    SETLOCAL EnableDelayedExpansion
-    IF EXIST "!LOCALLOW!\!locallow64hex!" (
-            ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%TEMP%\001"
-            DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
-            )
     ENDLOCAL
 )
 :InboxApps
@@ -571,47 +567,64 @@ DIR /B/A:-D "%LOCALA%" 2>NUL>locala
 DIR /B/A:-D "%LOCALLOW%" 2>NUL>locallow
 DIR /B/A:-D "%STARTUP%" 2>NUL>startup
 DIR /B/A:-D "%SYS32%\config\systemprofile\AppData" 2>NUL>sys32appdata
-
+DIR /B/A:-D "%WINDIR%" 2>NUL>windir
+REM ~~~~~ %ALLUSERSPROFILE% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <allusersprofile >allusersprofile2
-FOR /F "TOKENS=*" %%G IN ( allusersprofile2 ) DO @(
+SORT_ -f -u <allusersprofile2 >allusersprofile3
+FOR /F "TOKENS=*" %%G IN ( allusersprofile3 ) DO @(
   ECHO.%ALLUSERSPROFILE%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%ALLUSERSPROFILE%\%%G" >NUL 2>&1
   )
-
+REM ~~~~~ %APPDATA% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <appdata >appdata2
-FOR /F "TOKENS=*" %%G IN ( appdata2 ) DO @(
+SORT_ -f -u <appdata2 >appdata3
+FOR /F "TOKENS=*" %%G IN ( appdata3 ) DO @(
   ECHO.%APPDATA%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%APPDATA%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %LOCALA% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locala >locala2
-FOR /F "TOKENS=*" %%G IN ( locala2 ) DO @(
+GREP -Esi "^([0-9]{8,}|[0-9a-f]{32})$" <locala >>locala2
+SORT_ -f -u <locala2 >locala3
+FOR /F "TOKENS=*" %%G IN ( locala3 ) DO @(
   ECHO.%LOCALA%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%LOCALA%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %LOCALLOW% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locallow >locallow2
-FOR /F "TOKENS=*" %%G IN ( locallow2 ) DO @(
+GREP -Esi "^[a-f0-9]{64}$" <locallow >>locallow2
+SORT_ -f -u <locallow2 >locallow3
+FOR /F "TOKENS=*" %%G IN ( locallow3 ) DO @(
   ECHO.%LOCALLOW%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%LOCALLOW%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %STARTUP% SEARCH ~~~~~~~~~ 
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <startup >startup2
-GREP -Esi "^.\.vb[e|s]\.lnk$" <startup >>startup2
-FOR /F "TOKENS=*" %%G IN ( startup2 ) DO @(
+GREP -Esi "^.\.(vb[e|s]|exe|pif|ps1|scr|js|dll|cmd)\.lnk$" <startup >>startup2
+SORT_ -f -u <startup2 >startup3
+FOR /F "TOKENS=*" %%G IN ( startup3 ) DO @(
   ECHO.%STARTUP%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%STARTUP%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %sys32appdata% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <sys32appdata >sys32appdata2
-FOR /F "TOKENS=*" %%G IN ( sys32appdata2 ) DO @(
+SORT_ -f -u <sys32appdata2 >sys32appdata3
+FOR /F "TOKENS=*" %%G IN ( sys32appdata3 ) DO @(
   ECHO.%SYS32%\config\systemprofile\AppData\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%SYS32%\config\systemprofile\AppData\%%G" >NUL 2>&1
   )
+REM ~~~~~ %WINDIR% SEARCH ~~~~~~~~~
+rem GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <sys32appdata >sys32appdata2
+rem SORT_ -f -u <sys32appdata2 >sys32appdata3
+rem FOR /F "TOKENS=*" %%G IN ( sys32appdata3 ) DO @(
+rem  ECHO.%SYS32%\config\systemprofile\AppData\%%G ^(File^)>>"%TEMP%\001"
+rem  DEL /A/F/Q "%SYS32%\config\systemprofile\AppData\%%G" >NUL 2>&1
+rem  )
 
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Gitl\mrucl.exe"
+"%APPDATA%\Cpb_Docker\moagent.exe"
 "%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
 "%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
@@ -633,6 +646,7 @@ FOR %%G in (
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%WINDIR%\$nya-onimai3\$nya-Loli.bat"
 "%WTASKS%\Gtask.job"
+"%WTASKS%\MB Led SDK.job"
 ) DO @(
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
@@ -683,7 +697,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.4 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.6 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -696,6 +710,14 @@ echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
   TYPE "%TEMP%\000rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
+)
+
+ECHO(Services:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\000b" (
+  SORT_ -f -u <"%TEMP%\000b" >"%TEMP%\000brdy"
+  TYPE "%TEMP%\000brdy">>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
@@ -758,6 +780,7 @@ allusersprofile*
 locala*
 locallow*
 sys32appdata*
+windir*
 temp0*
 ) DO @DEL /A/F/Q "%CD%\%%G" >NUL 2>&1
 ECHO.
