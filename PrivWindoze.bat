@@ -65,7 +65,7 @@ FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
-ECHO.*                PrivWindoze Lite v2.9.1               *
+ECHO.*                   PrivWindoze Lite                   *
 ECHO.*                 https://furtivex.net                 *
 ECHO.*                                                      *
 ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
@@ -257,6 +257,7 @@ FOR %%G in (
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\ImController\Plugins\LenovoSystemUpdatePlugin_WeeklyTask"
 "Lenovo\Lenovo Service Bridge\%SID%"
 "Lenovo\LenovoNowLauncher"
 "Lenovo\LenovoNowQuarterlyLaunch"
@@ -275,6 +276,7 @@ FOR %%G in (
 "Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
 "Lenovo\Vantage\Schedule\LenovoCompanionAppAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\LenovoSystemUpdateAddin_WeeklyTask"
+"Lenovo\Vantage\Schedule\NotificationCenter"
 "Lenovo\Vantage\Schedule\SettingsWidgetAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\SmartPerformance.ExpireReminder"
 "Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
@@ -364,16 +366,16 @@ FOR %%G in (
 "UEIPInvitation"
 ) DO @(
   IF EXIST "%SYS32%\Tasks\%%G" (
-    ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+    ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
     SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
     )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^NvTmRep_" >temp00
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^NvTmRep_|AsusSystemAnalysis_|ASUS Optimization" >temp00
 DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry" >>temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "%%G" /F >NUL 2>&1
   )
 )
@@ -382,7 +384,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\%%G" /F >NUL 2>&1
   )
 )
@@ -391,7 +393,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\%%G" /F >NUL 2>&1
   )
 )
@@ -400,7 +402,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\%%G" /F >NUL 2>&1
   )
 )
@@ -541,8 +543,8 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze Lite by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.9.1 ^(11.24.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze Lite v2.9.3 ^(11.26.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
