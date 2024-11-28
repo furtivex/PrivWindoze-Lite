@@ -1,8 +1,8 @@
-:: PrivWindoze
+:: PrivWindoze Lite
 :: Created by Furtivex
+@ECHO OFF
 @SETLOCAL
 @CD /D "%~dp0"
-@ECHO OFF
 SET DEBUG=OFF
 COLOR 0E
 TITLE .
@@ -61,7 +61,12 @@ whoami /user>"%TEMP%\privwindozelogwho.txt"
 GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozelogwho.txt" >"%TEMP%\privwindozelogwho2.txt"
 IF ERRORLEVEL 1 ( GOTO :AdminChk )
 SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
-FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
+FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO SET SID=%%G
+
+IF EXIST "%APPDATA%\Mozilla\Firefox\Profiles" @(
+  DIR /B/A:D "%APPDATA%\Mozilla\Firefox\Profiles" 2>NUL|GREP -Esi "\.default-release$">"%TEMP%\privwindozeff.txt"
+  FOR /F %%G in (%TEMP%\privwindozeff.txt) DO SET FFPROFILE=%%G
+  )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
@@ -157,7 +162,7 @@ DEL /A/F/Q temp0? >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE %URun% /V com.slatedigital.analytics /F >NUL 2>&1
 REG DELETE %URun% /V LenovoVantageToolbar /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
+REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V HPOneAgentService /F >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
 
 REM ~~~~~ START OF MALWARE ~~~~~~~\/
@@ -216,7 +221,7 @@ FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
 
 :: POLICIES ::
 :Policies
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
@@ -228,21 +233,27 @@ REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
-REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
-REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
-REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot" /T REG_DWORD /V value /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V DisablePreviewDesktop /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCopilotButton /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCortanaButton /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowInfoTip /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_IrisRecommendations /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_ShowClassicMode /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 
 
 :: TASKS ::
@@ -371,8 +382,7 @@ FOR %%G in (
     )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^NvTmRep_|AsusSystemAnalysis_|ASUS Optimization" >temp00
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry" >>temp00
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(NvTmRep_|Asus)|Telemetry" >temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -410,15 +420,25 @@ DEL /A/F temp0? >NUL 2>&1
 
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
-FOR /F %%G in ( svc_stop_disable.dat ) DO (
-    SC CONFIG "%%G" start= disabled>nul
-    SC STOP "%%G">nul
-)
-@FOR /F "TOKENS=*" %%G IN ( svc_delete.dat ) DO @(
-  SC QUERY "%%G" 2>NUL|GREP -Es "WAIT_HINT" >temp00
+@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.dat ) DO @(
+  SC CONFIG "%%G" start= disabled|GREP -Es "ChangeServiceConfig SUCCESS">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service^) >>"%TEMP%\000b"
-    SC DELETE "%%G" >nul
+    ECHO.%%G ^(Service Disabled^)>>"%TEMP%\000b"
+    )
+)
+
+@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.dat ) DO @(
+  SC STOP "%%G"|GREP -Es "STOP_PENDING|ControlService FAILED 1062">temp00
+  IF NOT ERRORLEVEL 1 (
+    ECHO.%%G ^(Service Stopped^)>>"%TEMP%\000b"
+    )
+)
+
+@FOR /F "TOKENS=*" %%G IN ( svc_delete.dat ) DO @(
+  SC QUERY "%%G"|GREP -Es "WAIT_HINT">temp00
+  IF NOT ERRORLEVEL 1 (
+    ECHO.%%G ^(Service Deleted^)>>"%TEMP%\000b"
+    SC DELETE "%%G">nul
     )
 )
 DEL /A/F temp0? >NUL 2>&1
@@ -478,7 +498,7 @@ FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
-IF ERRORLEVEL 1 ( GOTO :Rootkits )
+IF ERRORLEVEL 1 ( GOTO :Blizzard )
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Microsoft3DViewer|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
@@ -492,6 +512,21 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogp_del.txt") DO (
                                               )
     ENDLOCAL
 )
+:Blizzard
+DIR /B/A:-D "%LOCALA%\Blizzard Entertainment\Telemetry" 2>NUL|GREP -Es ".*">temp00
+IF ERRORLEVEL 1 ( GOTO :Firefox )
+@FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
+  ECHO."%LOCALA%\Blizzard Entertainment\Telemetry\%%G" ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%LOCALA%\Blizzard Entertainment\Telemetry\%%G" >NUL 2>&1
+  )
+:Firefox
+IF NOT EXIST "%APPDATA%\Mozilla\Firefox\Profiles" GOTO :Rootkits
+DIR /B/A:D "%APPDATA%\Mozilla\Firefox\Profiles\%FFPROFILE%\storage\to-be-removed" 2>NUL|GREP -Eis "\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozeff00.txt"
+IF ERRORLEVEL 1 ( GOTO :Rootkits )
+FOR /F "TOKENS=*" %%G IN ( %TEMP%\privwindozeff00.txt ) DO @(
+  ECHO."%APPDATA%\Mozilla\Firefox\Profiles\%FFPROFILE%\storage\to-be-removed\%%G">>"%TEMP%\001b"
+  RD /S/Q "%APPDATA%\Mozilla\Firefox\Profiles\%FFPROFILE%\storage\to-be-removed\%%G" >NUL 2>&1
+  )
 :Rootkits
 IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
 %SYS32%\pnputil.exe /enum-drivers 2>NUL|GREP -Es "^Original Name">"%TEMP%\privwindozelogrk.txt"
@@ -511,8 +546,13 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%PROGRAMFILES%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
+"%PROGRAMFILES%\Dell\DellDataVault\DDVDataCollector.exe"
+"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent\Dell.TechHub.Analytics.SubAgent.exe"
+"%STARTMENU17%\Adobe offers.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
+"%USERPROFILE%\Favorites\Bing.url"
 ) DO @(
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
@@ -521,7 +561,28 @@ FOR %%G in (
 )
 
 FOR %%G in (
+"%APPDATA%\obs-studio\logs\*"
+"%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
+"%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
+"%LOCALA%\AMD\DxCache\*"
+"%LOCALA%\AMD\DxcCache\*"
+"%LOCALA%\AMD\VkCache\*"
+"%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
+"%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\AMD\DxCache\*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\FontCache\*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\INetCache\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*"
+"%WINDIR%\SystemTemp\*"
+"%WINDIR%\Temp\*"
+) DO @DEL /A/F/Q "%%G" >NUL 2>&1
+
+FOR %%G in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
+"%LOCALA%\Blizzard Entertainment\Telemetry"
+"%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HP\HP One Agent"
@@ -529,10 +590,6 @@ FOR %%G in (
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
-"%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
-"%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
-"%PROGRAMFILES(x86)%\Lenovo\VantageService"
-"%WINDIR%\GameBarPresenceWriter"
 ) DO @(
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
@@ -540,10 +597,23 @@ FOR %%G in (
     )
 )
 
+IF EXIST "%PROGRAMFILES(X86)%" (
+FOR %%G in (
+"%PROGRAMFILES(X86)%\HP\HP Support Framework\Resources\BingPopup"
+"%PROGRAMFILES(X86)%\Lenovo\LenovoNow"
+"%PROGRAMFILES(X86)%\Lenovo\VantageService"
+"%PROGRAMFILES(X86)%\Microsoft\Temp"
+) DO @(
+  IF EXIST %%G (
+    ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+    RD /S/Q %%G >NUL 2>&1
+    )
+  )
+)
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze Lite v2.9.3 ^(11.26.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze Lite v2.9.4 ^(11.28.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -620,7 +690,9 @@ SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURREN
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
-
+FOR %%G in (
+temp0?
+) DO @DEL /A/F/Q "%CD%\%%G" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
