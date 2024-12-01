@@ -1,19 +1,24 @@
-diagtrack
+DCIService
+DDVCollectorSvcApi
+DDVDataCollector
+DiagTrack
 dmwappushservice
 dosvc
 dusmsvc
-hp-one-agent-service
-hp comm recover
-hpapphelpercap
-hpcustomcapdriver
-hpdiagscap
-hpnetworkcap
-hpsysinfocap
-hptouchpointanalyticsservice
-lenovovantageservice
+HP-One-Agent-Service
+HP Comm Recover
+HPAppHelperCap
+HPCustomCapDriver
+HPDiagsCap
+HPNetworkCap
+HPSysInfoCap
+HpTouchpointAnalyticsService
+Intel Analytics Service
+LenovoVantageService
 SmartAppearanceAISVC
-tobiialenovoyx80
-tobiirgb
-udcservice
-ueipsvc
+SmartSense
+TobiiALENOVOYX80
+TobiiRGB
+UDCService
+UEIPSvc
 WpnService

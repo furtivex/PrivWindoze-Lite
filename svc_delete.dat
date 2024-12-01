@@ -1,5 +1,7 @@
 DCIService
-hp-one-agent-service
+DDVCollectorSvcApi
+DDVDataCollector
+HP-One-Agent-Service
 HP Comm Recover
 HPAppHelperCap
 HPCustomCapDriver
