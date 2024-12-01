@@ -78,7 +78,7 @@ IF EXIST "%APPDATA%\Mozilla\Firefox\Profiles" @(
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
-ECHO.*                      PrivWindoze                     *
+ECHO.*                   PrivWindoze Lite                   *
 ECHO.*                 https://furtivex.net                 *
 ECHO.*                                                      *
 ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
@@ -641,7 +641,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.4 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze Lite v3.0.4 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
