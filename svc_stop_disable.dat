@@ -11,6 +11,8 @@ HPAppHelperCap
 HPCustomCapDriver
 HPDiagsCap
 HPNetworkCap
+HPOmenCap
+HPOmenCustomCapDriver
 HPSysInfoCap
 HpTouchpointAnalyticsService
 Intel Analytics Service
