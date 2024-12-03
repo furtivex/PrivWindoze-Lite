@@ -574,6 +574,7 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 
 :Files
 FOR %%G in (
+"%ALLUSERSPROFILE%\Microsoft\Windows\OneSettings\CortanaUWP.json"
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%PROGFILES32%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
