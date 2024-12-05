@@ -6,7 +6,7 @@
 SET DEBUG=OFF
 COLOR 71
 TITLE .
-DEL /F/Q "%TEMP%\*" >NUL 2>&1
+DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
 IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 FOR %%G in (
@@ -177,7 +177,6 @@ DEL /F/Q temp0? >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE %StartupApprovedRun% /VA /F >NUL 2>&1
-REG DELETE %URun% /V com.slatedigital.analytics /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V HPOneAgentService /F >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
 
@@ -198,8 +197,9 @@ FOR /F "usebackq delims=" %%G in ( Urunkey.cfg ) DO (
 
 :XboxHuer
 REG QUERY HKLM\Software\Microsoft\Tracing 2>NUL|GREP -Es "RAS[A-Z0-9]{5}$">"%TEMP%\privwindozelogh.txt"
+REG QUERY HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application 2>NUL|GREP -Eis "\\(HPAnalytics|HPTouchpointAnalyticsService)$">>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogh.txt") DO (
-   ECHO("%%G" ^(Registry Key^)>>"%TEMP%\004"
+   ECHO."%%G" ^(Registry Key^)>>"%TEMP%\004"
    REG DELETE "%%G" /F >NUL 2>&1
 )
 
@@ -656,7 +656,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze Lite v3.0.7 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze Lite v3.0.9 ^(12.04.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -731,8 +731,8 @@ Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 SED -r "s/(\x22|\x00+)//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%TEMP%\pwindoze_final.txt"
 
-IF EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\OneDrive\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
-IF NOT EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
+IF EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\OneDrive\Desktop\PrivWindozeLite_%EndTime%.txt" >NUL 2>&1
+IF NOT EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\Desktop\PrivWindozeLite_%EndTime%.txt" >NUL 2>&1
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1

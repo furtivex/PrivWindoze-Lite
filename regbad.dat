@@ -38,6 +38,7 @@ HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\A
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune
 HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
+HKLM\SYSTEM\CurrentControlSet\Services\EventLog\HP Analytics
 HKLM\Software\Microsoft\TelemetryClient
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
