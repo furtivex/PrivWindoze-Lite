@@ -137,7 +137,7 @@ TIMEOUT /T 2 /NOBREAK >NUL
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
 SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
-GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|MpDefenderCoreService|MsMpEng|MsSense|NisSrv|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
+GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|MpDefenderCoreService|MsMpEng|MsSense|NisSrv|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecHealthUI|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
 @FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
 DEL /F/Q temp0? >NUL 2>&1
 
@@ -607,9 +607,16 @@ FOR %%G in (
 "%ALLUSERSPROFILE%\Microsoft\Windows\OneSettings\CortanaUWP.json"
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%LOCALA%\Microsoft\BingWallpaperApp\BingWallpaperApp.exe"
 "%PROGFILES32%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
 "%PROGFILES32%\Dell\DellDataVault\DDVDataCollector.exe"
 "%PROGFILES32%\Dell\DTP\AnalyticsSubAgent\Dell.TechHub.Analytics.SubAgent.exe"
+"%PROGFILES32%\HP\HP Enabling Services\AppHelperCap.exe"
+"%PROGFILES32%\HP\HP Enabling Services\DiagsCap.exe"
+"%PROGFILES32%\HP\HP Enabling Services\NetworkCap.exe"
+"%PROGFILES32%\HP\HP Enabling Services\SysInfoCap.exe"
+"%PROGFILES32%\HP\HP Touchpoint Analytics Client\TouchpointAnalyticsClientService.exe"
+"%PROGFILES32%\HPCommRecovery\HPCommRecovery.exe"
 "%STARTMENUAUP%\Adobe offers.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
@@ -646,8 +653,10 @@ FOR %%G in (
 "%LOCALA%\Blizzard Entertainment\Telemetry"
 "%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
+"%LOCALA%\Microsoft\BingWallpaperApp"
 "%PROGFILES32%\Acer\User Experience Improvement Program Service"
 "%PROGFILES32%\Dell\DTP\AnalyticsSubAgent"
+"%PROGFILES32%\HP\HP Enabling Services"
 "%PROGFILES32%\HP\HP One Agent"
 "%PROGFILES32%\HP\OmenInstallMonitor"
 "%PROGFILES32%\HP\SystemOptimizer"
@@ -675,7 +684,19 @@ FOR %%G in (
     )
   )
 )
-  
+
+IF EXIST "%PROGFILES64%" (
+FOR %%G in (
+"%PROGFILES64%\HP\HP Support Framework\Resources\BingPopup\BingPopup.exe"
+"%PROGFILES64%\HP\HP System Event\HPWMISVC.exe"
+) DO @(
+  IF EXIST "%%G" (
+    ECHO.%%G ^(File^)>>"%TEMP%\001"
+    DEL /F/Q %%G >NUL 2>&1
+   )
+  )
+)
+
 :DoLog
 set h=%TIME:~0,2%
 set m=%TIME:~3,2%
@@ -686,7 +707,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze Lite v3.1.0 ^(12.06.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze Lite v3.1.1 ^(12.10.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"

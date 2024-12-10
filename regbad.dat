@@ -38,10 +38,19 @@ HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\A
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune
 HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
-HKLM\SYSTEM\CurrentControlSet\Services\EventLog\HP Analytics
 HKLM\Software\Microsoft\TelemetryClient
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{09D0DB68-90EA-4015-983E-A0BD777D5A02}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{5F084DD8-AF2C-4004-9C92-820C32E4BD55}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6468C4A5-E47E-405F-B675-A70A70983EA6}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{64BAA990-F1FC-4145-A7B1-E41FBBC9DA47}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{74FE39A0-FB76-47CD-84BA-91E2BBB17EF2}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{D1E8F2D7-7794-4245-B286-87ED86C1893C}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{E5FB98E0-0784-44F0-8CEC-95CD4690C43F}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\HP_Documentation
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\HPWelcome
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1
+HKLM\SYSTEM\CurrentControlSet\Services\EventLog\HP Analytics
 HKU\.DEFAULT\Software\Microsoft\TelemetryClient
 HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry
