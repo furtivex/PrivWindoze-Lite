@@ -10,6 +10,10 @@ HKCR\ms-insights
 HKCR\ms-meetnow
 HKCR\ms-meetnowflyout
 HKCR\ms-mobileplans
+HKCR\NucleusNativeMessaging.NucleusNativeMessaging
+HKCR\NucleusNativeMessaging.NucleusNativeMessaging.1
+HKCR\NucleusToastActivator.NucleusToastActivator
+HKCR\NucleusToastActivator.NucleusToastActivator.1
 HKCR\ms-xbet-survey
 HKCR\msnews
 HKCR\msnnews
