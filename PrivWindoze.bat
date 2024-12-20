@@ -961,5 +961,5 @@ ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
-TIMEOUT /t 03>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
+RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
 :eof
